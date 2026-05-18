@@ -1076,6 +1076,7 @@ function App() {
   });
   const [last, setLast] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
 
   // Online
   const [myColor, setMyColor] = useState(null);
@@ -1185,6 +1186,7 @@ function App() {
           ...s,
           [myColor]: s[myColor] + 1
         }));
+        setShowOverlay(true);
       } else setTurn(myColor === "B" ? "W" : "B");
       return;
     }
@@ -1204,6 +1206,7 @@ function App() {
         ...s,
         [turn]: s[turn] + 1
       }));
+      setShowOverlay(true);
       return;
     }
     if (mode === "pvc") {
@@ -1222,6 +1225,7 @@ function App() {
             ...s,
             W: s.W + 1
           }));
+          setShowOverlay(true);
         } else setTurn("B");
         setBusy(false);
       }, delay);
@@ -1391,12 +1395,12 @@ function App() {
     canHover: canHover,
     onClick: handleClick
   }), /*#__PURE__*/React.createElement(Fireworks, {
-    active: !!winner
-  }), winner && /*#__PURE__*/React.createElement(WinOverlay, {
+    active: !!winner && showOverlay
+  }), winner && showOverlay && /*#__PURE__*/React.createElement(WinOverlay, {
     winner: winner,
     myColor: myColor,
     mode: mode,
-    onClose: () => {}
+    onClose: () => setShowOverlay(false)
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 14,
